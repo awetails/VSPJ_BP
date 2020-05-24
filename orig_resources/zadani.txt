@@ -1,0 +1,2 @@
+Genetická neuronová síť ve hře 2048
+Realizujte efektivní algoritmus hry 2048 prostřednictvím konfigurovatelné neuronové sítě. Její topologii optimalizujte prostřednictvím genetických algoritmů. Dosažené výsledky diskutujte. Hra 2048 je populární tahová logická hra odehrávající se na mřížce, jejíž cílem je spojováním bloků dosáhnout nejvyššího skóre a přežít co největší počet tahů. Klíčová slova neuronová síť, genetický algoritmus, hra 2048 Keywords neural network, genetic algorithm, 2048
