@@ -2,6 +2,14 @@ class CSpecies {
     CNetwork prototype;
 
     ArrayList<CNetwork> members;
+    
+    CSpecies(CNetwork prot){
+       prototype = prot;
+    }
+    
+    void add_member(CNetwork member){
+      members.add(member);
+    }
 }
 
 float genetic_distance(CNetwork left, CNetwork right){

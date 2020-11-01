@@ -15,7 +15,13 @@ void setup(){
     
     manager = new CEvolutionManager(CEvolutionManager.THOUSAND_GAMES);
     
+    CPopulation population = new CPopulation(100);
+    population.first_generation();
+    
+    
     CNetwork network = new CNetwork(false);
+    
+    
     
     manager.evaluate(network);
     

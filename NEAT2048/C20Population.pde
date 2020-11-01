@@ -19,9 +19,12 @@ class CPopulation {
     }
     
     void first_generation(){
+      //create members
       for (int i = 0; i < _size; ++i){
         generation[0] = new CNetwork(false);
       }
+      //speciate
+      species.add(new CSpecies(generation[0]));
     }
     
     void adjust_fitness_to_species(){
