@@ -10,6 +10,24 @@ class CSpecies {
     void add_member(CNetwork member){
       members.add(member);
     }
+    
+    int get_size(){
+      return members.size();
+    }
+    
+    boolean is_in_species(CNetwork network, float treshold = 3.0){
+      return treshold >= genetic_distance(network, prototype);
+    }
+    
+    CNetwork get_most_fit_member(){
+      CNetwork highest = members.get(0);
+      for (CNetwork net : members){
+        if (net._fitness > highest._fitness){
+          highest = net;
+        }
+      }
+    }
+    
 }
 
 float genetic_distance(CNetwork left, CNetwork right){
@@ -73,9 +91,9 @@ float genetic_distance(CNetwork left, CNetwork right){
       ++high_i;
     }
   }
-  float param_c1 = 1;
-  float param_c2 = 1;
-  float param_c3 = 1;
+  float param_c1 = 1.0;
+  float param_c2 = 1.0;
+  float param_c3 = 0.4;
   float param_N = 1;
   
   param_W /= number_of_W;
