@@ -40,7 +40,7 @@ class CEvolutionManager {
     for (int i = 0; i < 1000; ++i){
       CGame game = play_game(network);
       fitness += thousand_games_fitness(game) / 1000; //get average
-      print("games played:" + i + "\n");
+      //print("games played:" + i + "\n");
     }
     network.setFit(fitness);
   }

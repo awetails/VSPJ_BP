@@ -5,6 +5,7 @@ class CSpecies {
     
     CSpecies(CNetwork prot){
        prototype = prot;
+       members = new ArrayList<CNetwork>();
     }
     
     void add_member(CNetwork member){
@@ -15,7 +16,11 @@ class CSpecies {
       return members.size();
     }
     
-    boolean is_in_species(CNetwork network, float treshold = 3.0){
+    boolean is_in_species(CNetwork network){
+      return is_in_species(network, 3.0);
+      
+    }
+    boolean is_in_species(CNetwork network, float treshold){
       return treshold >= genetic_distance(network, prototype);
     }
     
@@ -26,6 +31,7 @@ class CSpecies {
           highest = net;
         }
       }
+      return highest;
     }
     
 }
