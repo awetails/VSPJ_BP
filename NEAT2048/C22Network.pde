@@ -1,4 +1,6 @@
 class CNetwork {
+  
+    String UID;
 
     ArrayList<CGene> _genes_input;
     ArrayList<CGene> _genes_output;
@@ -15,9 +17,12 @@ class CNetwork {
     static final int ADD_NODE        = 2;
     static final int ADD_CONNECTION  = 3;
     
-    
 
     CNetwork(boolean empty){
+      UID = "N:";
+      for (int i = 0; i < 5; ++i){
+        UID += char(int(random(65,122)));
+      }
       if (empty){
         _genes_input = new ArrayList<CGene>();
         _genes_output = new ArrayList<CGene>();
@@ -29,15 +34,16 @@ class CNetwork {
         _genes_output = new ArrayList<CGene>();
         _genes_hidden = new ArrayList<CGene>();
         _connections = new ArrayList<CConnection>();
-        for (int i = 0; i < 16; ++i){
-          _genes_input.add(createCGene());
+        for (int i = 1; i <= 16; ++i){
+          _genes_input.add(new CGene(i, 0.0));
         }
-        for (int i = 0; i < 2; ++i){
-          _genes_output.add(createCGene());
+        for (int i = 1; i <= 2; ++i){
+          _genes_output.add(new CGene(16 + i, 0.0));
         }
+        gene_number = 18;
         for (int input = 0; input < 16; ++input){
           for (int output = 0; output < 2; ++output){
-            createCConnection(_genes_input.get(input),_genes_output.get(output));
+            _connections.add(createWeightCConnection(_genes_input.get(input),_genes_output.get(output),0));
           }
         }
       }
@@ -45,7 +51,9 @@ class CNetwork {
     
     void setInput(CGrid input){
       for (int i = 0; i < 16; ++i){
-        _genes_input.get(i)._value = input.getLinear(i);
+        float __value = input.getLinear(i);
+        if (__value != 0) __value = 1/__value;
+        _genes_input.get(i)._value = __value;
         _genes_input.get(i)._status = CGene.COMPUTED;
       }
     }
@@ -77,7 +85,9 @@ class CNetwork {
       
       for (CGene output_gene : _genes_output){
         output_gene.compute();
+        if (population.generation_number > slow_after) print(output_gene.getValue() + " ");
       }
+      if (population.generation_number > slow_after) print("\n");
       int out = 0;
       for (int i = 0; i < _genes_output.size(); ++i){
         if (_genes_output.get(i).getValue() > 0){
@@ -93,7 +103,9 @@ class CNetwork {
     }
     
     void _mutate_random_gene(){
-      _genes_hidden.get(int(random(_genes_hidden.size()))).mutate_random();
+      if (_genes_hidden.size() != 0){
+        _genes_hidden.get(int(random(_genes_hidden.size()))).mutate_random();
+      }
     }
     
     void _mutate_add_random_connection(){
@@ -150,30 +162,44 @@ class CNetwork {
     
     void _mutate_add_random_gene(){
       CConnection conn = _connections.get(int(random(_connections.size())));
-      CGene gene = createCGene();
-      CConnection conn_new_out = createCConnection(gene, conn._out, conn._weight);
-      CConnection conn_new_in = createCConnection(conn._in, gene);
-      conn._weight = 0;
+      CGene gene = createCGene(conn);
+      //CConnection conn_new_out = createCConnection(gene, conn._out, conn._weight);
+      //CConnection conn_new_in = createCConnection(conn._in, gene);
+      //conn._weight = 0;
       _genes_hidden.add(gene);
-      _connections.add(conn_new_out);
-      _connections.add(conn_new_in);
+      _connections.add(gene._input.get(0));
+      _connections.add(gene._output.get(0));
+      conn._weight = 0; //disables the original connection
     }
     
 
     //changes weight treshold or creates new nodes or connections  
     void mutate(){
+      float[] mutation_probabilities = {10.0, 20.0, 21.0, 22.0};
+      int mutate_choice=0;
       for (int i = 0; i < 5; ++i){
-        switch(int(random(4))){
+        float prob_rnd = random(mutation_probabilities[mutation_probabilities.length - 1]);
+        for (int prob_i = 0; prob_i < mutation_probabilities.length; ++prob_i){
+          if (prob_rnd < mutation_probabilities[prob_i]){
+            mutate_choice = prob_i;
+            break;
+          }
+        }
+        switch(mutate_choice){
           case MUTATE_WEIGHT:
+            //print(UID + ":MUTATE_WEIGHT\n");
             _mutate_random_connection();
             break;
           case MUTATE_TRESHOLD:
+            //print(UID + ":MUTATE_TRESHOLD\n");
             _mutate_random_gene();
             break;
           case ADD_NODE:
+            //print(UID + ":ADD_NODE\n");
             _mutate_add_random_gene();
             break;
           case ADD_CONNECTION:
+            //print(UID + ":ADD_CONNECTION\n");
             _mutate_add_random_connection();
             break;
         }

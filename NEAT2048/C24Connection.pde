@@ -10,7 +10,6 @@ class CConnection {
       _out = out;
       _innovation = innovation;
       _weight = weight;
-      connection_pool.add(new ConnectionPrimitive(_in._innovation, _out._innovation, _innovation));
     }
     
     void mutate_random(){
@@ -45,7 +44,26 @@ CConnection createCConnection(CGene in, CGene out){
     }
   }
   //no connection exists new must be created
-  CConnection new_conn = new CConnection(in, out, ++innovation_number, 1);
+  int new_innovation_number = ++innovation_number;
+  CConnection new_conn = new CConnection(in, out, new_innovation_number, 1);
+  in.addOutput(new_conn);
+  out.addInput(new_conn);
+  connection_pool.add(new ConnectionPrimitive(in._innovation, out._innovation, new_innovation_number));
+  return new_conn;
+}
+
+CConnection createWeightCConnection(CGene in, CGene out, float weight){
+  //check if trait already exists in the pool
+  for (ConnectionPrimitive conn : connection_pool){
+    if (conn._in == in._innovation && conn._out == out._innovation){
+      CConnection new_conn = new CConnection(in, out, conn._innovation, weight);
+      in.addOutput(new_conn);
+      out.addInput(new_conn);
+      return new_conn;
+    }
+  }
+  //no connection exists new must be created
+  CConnection new_conn = new CConnection(in, out, ++innovation_number, weight);
   in.addOutput(new_conn);
   out.addInput(new_conn);
   return new_conn;

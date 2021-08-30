@@ -70,4 +70,14 @@ class CGrid{
             }
         }
     }
+    String getGridText(){
+      String __grid = "";
+      for (int i = 0; i < _dim_x; ++i){
+            for (int j = 0; j < _dim_y; ++j){
+                __grid += grid[j][i].getValue() + " ";
+            }
+            __grid += "\n";
+        }
+      return __grid;
+    }
 }

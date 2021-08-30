@@ -20,6 +20,7 @@ class CGene {
       
       _input = new ArrayList<CConnection>();
       _output = new ArrayList<CConnection>();
+      
     }
     
         void mutate_random(){
@@ -70,7 +71,41 @@ class CGene {
     
 }
 
+class GenePrimitive{
+  int _target;
+  int _innovation;
+  
+  GenePrimitive(int target, int innovation){
+    _target = target;
+    _innovation = innovation;
+  }
+}
+
+
 int gene_number = 0;
+
+ArrayList<GenePrimitive> gene_pool = new ArrayList<GenePrimitive>();
+
+CGene createCGene(CConnection target){
+  for (GenePrimitive gene : gene_pool){
+    if (target._innovation == gene._innovation){
+      CGene new_gene = new CGene(gene._innovation, 0);
+      CConnection conn_new_out = createWeightCConnection(new_gene, target._out, target._weight);
+      CConnection conn_new_in = createWeightCConnection(target._in, new_gene, 1);
+      new_gene._input.add(conn_new_in);
+      new_gene._output.add(conn_new_out);
+      return new_gene;
+    }
+  }
+  int new_gene_number = ++gene_number;
+  CGene new_gene = new CGene(new_gene_number, 0);
+  gene_pool.add(new GenePrimitive(target._innovation, new_gene_number));
+  CConnection conn_new_out = createWeightCConnection(new_gene, target._out, target._weight);
+  CConnection conn_new_in = createWeightCConnection(target._in, new_gene, 1);
+  new_gene._input.add(conn_new_in);
+  new_gene._output.add(conn_new_out);
+  return new_gene;
+}
 
 CGene createCGene(){
   return new CGene(++gene_number,0.0);

@@ -64,6 +64,7 @@ class CGame {
           if (grid.getTile(x, y).getValue() == 0) {
             for (int dy = y; dy <= y_dim - 1; ++dy) {
               if (grid.getTile(x, dy).getValue() != 0) {
+                legal = true;
                 grid.getTile(x, y).setValue(grid.getTile(x, dy).getValue());
                 grid.getTile(x, dy).setValue(0);
                 for (int ddy = dy; ddy <= y_dim - 1; ++ddy) {
@@ -81,6 +82,7 @@ class CGame {
               if (grid.getTile(x, ddy).getValue() == grid.getTile(x, y).getValue()) {
                 grid.getTile(x, y).increment();
                 grid.getTile(x, ddy).setValue(0);
+                legal = true;
                 break;
               }
             }
@@ -95,12 +97,14 @@ class CGame {
           if (grid.getTile(x, y).getValue() == 0) {
             for (int dy = y; dy >= 0; --dy) {
               if (grid.getTile(x, dy).getValue() != 0) {
+                legal = true;
                 grid.getTile(x, y).setValue(grid.getTile(x, dy).getValue());
                 grid.getTile(x, dy).setValue(0);
                 for (int ddy = dy; ddy >= 0; --ddy) {
                   if (grid.getTile(x, ddy).getValue() == grid.getTile(x, y).getValue()) {
                     grid.getTile(x, y).increment();
                     grid.getTile(x, ddy).setValue(0);
+                    legal = true;
                     break;
                   }
                 }
@@ -128,6 +132,7 @@ class CGame {
           if (grid.getTile(x, y).getValue() == 0) {
             for (int dx = x; dx <= x_dim - 1; ++dx) {
               if (grid.getTile(dx, y).getValue() != 0) {
+                legal = true;
                 grid.getTile(x, y).setValue(grid.getTile(dx, y).getValue());
                 grid.getTile(dx, y).setValue(0);
                 for (int ddx = dx; ddx <= x_dim - 1; ++ddx) {
@@ -145,6 +150,7 @@ class CGame {
               if (grid.getTile(ddx, y).getValue() == grid.getTile(x, y).getValue()) {
                 grid.getTile(x, y).increment();
                 grid.getTile(ddx, y).setValue(0);
+                legal = true;
                 break;
               }
             }
@@ -155,10 +161,13 @@ class CGame {
 
     if (move == PLAY_RIGHT) {
       for (int y = 0; y < y_dim; ++y) {
+        //println("checking row:" + y);
         for (int x = x_dim - 1; x > 0; --x) {
           if (grid.getTile(x, y).getValue() == 0) {
             for (int dx = x; dx >= 0; --dx) {
               if (grid.getTile(dx, y).getValue() != 0) {
+                //println("moving " + x + ":" + y + " to " + dx + ":" + y);
+                legal = true;
                 grid.getTile(x, y).setValue(grid.getTile(dx, y).getValue());
                 grid.getTile(dx, y).setValue(0);
                 for (int ddx = dx; ddx >= 0; --ddx) {
@@ -176,6 +185,7 @@ class CGame {
               if (grid.getTile(ddx, y).getValue() == grid.getTile(x, y).getValue()) {
                 grid.getTile(x, y).increment();
                 grid.getTile(ddx, y).setValue(0);
+                legal = true;
                 break;
               }
             }
@@ -183,7 +193,7 @@ class CGame {
         }
       }
     }
-
+    //println("legal:" + legal);
     _last_move = move;
     if (!legal) {
       _last_status = ILLEGAL_MOVE;
@@ -192,7 +202,7 @@ class CGame {
 
     if (create_random()) {
       _moves++;
-      print("played:" + _moves + "\n");
+      //print("played:" + _moves + "\n");
       _last_status = CONTINUE;
       return CONTINUE;
     } else {
@@ -202,7 +212,7 @@ class CGame {
   }
 
   CGame(boolean visible) {
-    //create_random();
+    create_random();
     if (visible) {
       draw(800, 800);
     } else {
