@@ -34,26 +34,43 @@ class CNetwork {
         _genes_output = new ArrayList<CGene>();
         _genes_hidden = new ArrayList<CGene>();
         _connections = new ArrayList<CConnection>();
-        for (int i = 1; i <= 16; ++i){
-          _genes_input.add(new CGene(i, 0.0));
+        int gene_i = 1;
+        for (; gene_i <= 4*4*12; ++gene_i){ //each number has its own descreet state
+          _genes_input.add(new CGene(gene_i, 0.0));
         }
-        for (int i = 1; i <= 2; ++i){
-          _genes_output.add(new CGene(16 + i, 0.0));
+        int input_nodes = gene_i++;
+        println("input_nodes:" + input_nodes);
+        for (; gene_i <= input_nodes + 2; ++gene_i){
+          _genes_output.add(new CGene(gene_i, 0.0));
         }
-        gene_number = 18;
-        for (int input = 0; input < 16; ++input){
-          for (int output = 0; output < 2; ++output){
+        gene_number = gene_i;
+        int output_nodes = gene_i - input_nodes;
+        println("output_nodes:" + output_nodes);
+        for (int input = 0; input < input_nodes - 1; ++input){
+          println("input:" + input);
+          for (int output = 0; output < output_nodes - 1; ++output){
+            println("output:" + output);
             _connections.add(createWeightCConnection(_genes_input.get(input),_genes_output.get(output),0));
           }
         }
+        println("_genes_input:" + _genes_input.size() + " " + _genes_input);
+        println("_genes_output:" + _genes_output.size() + " " + _genes_output);
       }
     }
     
     void setInput(CGrid input){
-      for (int i = 0; i < 16; ++i){
-        float __value = input.getLinear(i);
-        if (__value != 0) __value = 1/__value;
-        _genes_input.get(i)._value = __value;
+      int tile_number = input._dim_x * input._dim_y;
+      for (int tile_i = 0; tile_i < tile_number; ++tile_i){
+        float __value = input.getLinear(tile_i);
+        for (int value_i = 0; value_i < 12; ++value_i){
+          if (__value == 0){
+            _genes_input.get((tile_i * 12) + value_i)._value = 1;
+            break;
+          }
+          __value /= 2;
+        }
+      }
+      for (int i = 0; i < tile_number * 12; ++i){
         _genes_input.get(i)._status = CGene.COMPUTED;
       }
     }

@@ -15,7 +15,7 @@ void setup(){
     textAlign(CENTER, CENTER);
     
     randomSeed(1);
-    slow_after = 10;
+    slow_after = 40;
     
     manager = new CEvolutionManager(CEvolutionManager.THOUSAND_GAMES);
     

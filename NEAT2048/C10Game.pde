@@ -104,7 +104,6 @@ class CGame {
                   if (grid.getTile(x, ddy).getValue() == grid.getTile(x, y).getValue()) {
                     grid.getTile(x, y).increment();
                     grid.getTile(x, ddy).setValue(0);
-                    legal = true;
                     break;
                   }
                 }
@@ -116,6 +115,7 @@ class CGame {
               if (grid.getTile(x, ddy).getValue() == grid.getTile(x, y).getValue()) {
                 grid.getTile(x, y).increment();
                 grid.getTile(x, ddy).setValue(0);
+                legal = true;
                 break;
               }
             }
