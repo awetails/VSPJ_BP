@@ -1,19 +1,26 @@
 class CSpecies {
-    String UID;
+    String _UID;
   
     CNetwork prototype;
 
     ArrayList<CNetwork> members;
     
     CSpecies(CNetwork prot){
-      UID = "S:";
+      _UID = "S:";
       for (int i = 0; i < 5; ++i){
-        UID += char(int(random(65,122)));
+        _UID += char(int(random(65,122)));
       }
       
        prototype = prot;
        members = new ArrayList<CNetwork>();
        add_member(prot);
+    }
+    
+    CSpecies(String UID, CNetwork prot){
+      _UID = UID;
+      
+       prototype = prot;
+       members = new ArrayList<CNetwork>();
     }
     
     void add_member(CNetwork member){

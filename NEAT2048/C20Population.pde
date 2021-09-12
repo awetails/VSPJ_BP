@@ -31,7 +31,7 @@ class CPopulation {
       
       
       //create new generation
-      create_new_generation(_size);
+      create_new_generation();
       generation_number++;
     }
     
@@ -41,22 +41,17 @@ class CPopulation {
       generation = new CNetwork[_size];
     }
     
-    void create_new_generation(int _size){
+    void create_new_generation(){
       int created_networks = 0;
       
       adjust_fitness_to_species();
       prepare_fitness_prob(_size);
       
       generation = new CNetwork[_size];
-
-      //preserve species
-      for (CSpecies spec : old_species){
-        generation[created_networks++] = spec.get_most_fit_member();
-      }
       
       for (int i = created_networks; i < _size; ++i){
-        CNetwork parent1 = select_random_network_on_fitness(_size);
-        CNetwork parent2 = select_random_network_on_fitness(_size);
+        CNetwork parent1 = select_random_network_on_fitness();
+        CNetwork parent2 = select_random_network_on_fitness();
         generation[created_networks++] = parent1.createOffspring(parent2);
         //print(parent1.UID + " " + parent2.UID + " -> " + generation[created_networks-1].UID + "\n");
       }
@@ -66,7 +61,7 @@ class CPopulation {
           network.mutate();
         }
       }
-      
+      speciate_generation();
     }
     
     void first_generation(){
@@ -85,26 +80,43 @@ class CPopulation {
     }
     
     void speciate_generation(){
-      println("speciating generation, current number of species:" + species.size());
-      for (CSpecies spec : species){
-        print(spec.UID + " ");
-      }
-      print("\n");
       for (CNetwork network : generation){
-        //boolean assigned = false;
         boolean added_spec = false;
-        for (CSpecies spec : species){
-          if (spec.is_in_species(network)){
-            spec.add_member(network);
+        for (CSpecies old_spec : old_species){
+          boolean species_exists = false;
+          if (old_spec.is_in_species(network)){
+            for (CSpecies spec : species){
+              if (spec == old_spec){
+                species_exists = true;
+                spec.add_member(network);
+                added_spec = true;
+                break;
+              }
+            }
+            if (!species_exists){
+              //transfer old species
+              species.add(new CSpecies(old_spec._UID, old_spec.prototype));
+              species.get(species.size() - 1).add_member(network);
+              added_spec = true;
+            } else {
+              break;
+            }
+          }
+          if (species_exists){
+            break;
+          } 
+        }
+        for (CSpecies new_spec : species){
+          if (new_spec.is_in_species(network)){
+            new_spec.add_member(network);
             added_spec = true;
             break;
           }
         }
-        if (added_spec){
-          continue;
+        if (!added_spec){
+          //create new species
+          species.add(new CSpecies(network));
         }
-        //println("adding a species");
-        species.add(new CSpecies(network));
       }
     }
     
@@ -127,7 +139,7 @@ class CPopulation {
     }
     
     //returns a random network using fitness as their probability
-    CNetwork select_random_network_on_fitness(int _size){
+    CNetwork select_random_network_on_fitness(){
       double network_rnd = (double)random((float)fitness_prob[_size-1]);
       for (int i = 0; i < _size; ++i){
         if (network_rnd < fitness_prob[i]){

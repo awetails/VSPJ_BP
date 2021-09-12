@@ -15,7 +15,7 @@ void setup(){
     textAlign(CENTER, CENTER);
     
     randomSeed(1);
-    slow_after = 4000;
+    slow_after = 0;
     
     manager = new CEvolutionManager(CEvolutionManager.THOUSAND_GAMES);
     
@@ -48,7 +48,7 @@ void draw(){
     game.play(play);
     game.draw(800,800);
     _wait(1);
-    game.create_random(); //<>//
+    game.create_random(); //<>// //<>//
     time = time + 300;
     //done = true;
     
@@ -71,8 +71,6 @@ void draw(){
       }
     }   
   println(top_fitness);
-  
-  population.speciate_generation();
   
   population.new_generation();
   
