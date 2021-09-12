@@ -63,9 +63,12 @@ CConnection createWeightCConnection(CGene in, CGene out, float weight){
     }
   }
   //no connection exists new must be created
-  CConnection new_conn = new CConnection(in, out, ++innovation_number, weight);
+  int new_innovation_number = ++innovation_number;
+  CConnection new_conn = new CConnection(in, out, new_innovation_number, weight);
   in.addOutput(new_conn);
   out.addInput(new_conn);
+  connection_pool.add(new ConnectionPrimitive(in._innovation, out._innovation, new_innovation_number));
+  println("creating new conn:" + in._innovation + " " + out._innovation);
   return new_conn;
 }
 

@@ -39,17 +39,13 @@ class CNetwork {
           _genes_input.add(new CGene(gene_i, 0.0));
         }
         int input_nodes = gene_i++;
-        println("input_nodes:" + input_nodes);
         for (; gene_i <= input_nodes + 2; ++gene_i){
           _genes_output.add(new CGene(gene_i, 0.0));
         }
         gene_number = gene_i;
         int output_nodes = gene_i - input_nodes;
-        println("output_nodes:" + output_nodes);
         for (int input = 0; input < input_nodes - 1; ++input){
-          println("input:" + input);
           for (int output = 0; output < output_nodes - 1; ++output){
-            println("output:" + output);
             _connections.add(createWeightCConnection(_genes_input.get(input),_genes_output.get(output),0));
           }
         }

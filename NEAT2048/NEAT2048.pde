@@ -15,13 +15,15 @@ void setup(){
     textAlign(CENTER, CENTER);
     
     randomSeed(1);
-    slow_after = 40;
+    slow_after = 4000;
     
     manager = new CEvolutionManager(CEvolutionManager.THOUSAND_GAMES);
     
-    population = new CPopulation(100);
+    population = new CPopulation(500);
     population.first_generation();
-    
+    print("\n\n----------------\nGENERATION: " + population.generation_number + "\n----------------\n");
+    print("innovation_number:" + innovation_number + "\n");
+    print("\n");
     
     //CNetwork network = new CNetwork(false);
     
