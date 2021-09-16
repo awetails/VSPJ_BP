@@ -15,11 +15,11 @@ void setup(){
     textAlign(CENTER, CENTER);
     
     randomSeed(1);
-    slow_after = 0;
+    slow_after = 8000;
     
     manager = new CEvolutionManager(CEvolutionManager.THOUSAND_GAMES);
     
-    population = new CPopulation(500);
+    population = new CPopulation(5000);
     population.first_generation();
     print("\n\n----------------\nGENERATION: " + population.generation_number + "\n----------------\n");
     print("innovation_number:" + innovation_number + "\n");
@@ -48,7 +48,7 @@ void draw(){
     game.play(play);
     game.draw(800,800);
     _wait(1);
-    game.create_random(); //<>// //<>//
+    game.create_random(); //<>//
     time = time + 300;
     //done = true;
     
@@ -80,6 +80,8 @@ void draw(){
   
   print("\n\n----------------\nGENERATION: " + population.generation_number + "\n----------------\n");
   print("innovation_number:" + innovation_number + "\n");
+  println("species:" + population.species.size());
+  println("old_species:" + population.old_species.size());
   print("\n");
 
 }

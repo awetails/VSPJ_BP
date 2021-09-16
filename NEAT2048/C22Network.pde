@@ -49,8 +49,8 @@ class CNetwork {
             _connections.add(createWeightCConnection(_genes_input.get(input),_genes_output.get(output),0));
           }
         }
-        println("_genes_input:" + _genes_input.size() + " " + _genes_input);
-        println("_genes_output:" + _genes_output.size() + " " + _genes_output);
+        //println("_genes_input:" + _genes_input.size() + " " + _genes_input);
+        //println("_genes_output:" + _genes_output.size() + " " + _genes_output);
       }
     }
     

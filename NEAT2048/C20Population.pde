@@ -20,11 +20,7 @@ class CPopulation {
       print("\n");
       //print("old_species:" + old_species.size());
       old_species = species;
-      print("species:" + species.size() + "\n");
-      print("old_species:" + old_species.size() + "\n");
       species = new ArrayList<CSpecies>();
-      print("species:" + species.size() + "\n");
-      print("old_species:" + old_species.size() + "\n");
       /*for (int i = 0; i < old_species.size(); ++i){
         species.add(new CSpecies(old_species.get(i).members.get(0)));
       }*/
@@ -90,6 +86,7 @@ class CPopulation {
                 species_exists = true;
                 spec.add_member(network);
                 added_spec = true;
+                //println("adding to old generation");
                 break;
               }
             }
@@ -98,6 +95,8 @@ class CPopulation {
               species.add(new CSpecies(old_spec._UID, old_spec.prototype));
               species.get(species.size() - 1).add_member(network);
               added_spec = true;
+              //println("transfering old generation");
+              break;
             } else {
               break;
             }
@@ -106,11 +105,14 @@ class CPopulation {
             break;
           } 
         }
-        for (CSpecies new_spec : species){
-          if (new_spec.is_in_species(network)){
-            new_spec.add_member(network);
-            added_spec = true;
-            break;
+        if (!added_spec){
+          for (CSpecies new_spec : species){
+            if (new_spec.is_in_species(network)){
+              new_spec.add_member(network);
+              added_spec = true;
+              //println("creating new generation");
+              break;
+            }
           }
         }
         if (!added_spec){

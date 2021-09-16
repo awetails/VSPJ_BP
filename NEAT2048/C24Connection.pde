@@ -68,7 +68,7 @@ CConnection createWeightCConnection(CGene in, CGene out, float weight){
   in.addOutput(new_conn);
   out.addInput(new_conn);
   connection_pool.add(new ConnectionPrimitive(in._innovation, out._innovation, new_innovation_number));
-  println("creating new conn:" + in._innovation + " " + out._innovation);
+  //println("creating new conn:" + in._innovation + " " + out._innovation);
   return new_conn;
 }
 

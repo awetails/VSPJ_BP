@@ -93,6 +93,8 @@ float genetic_distance(CNetwork left, CNetwork right){
       ++high_i;
       continue; 
     }
+    high_innovations.get(high_i);
+    low_innovations.get(low_i);
     if (high_innovations.get(high_i) == low_innovations.get(low_i)){
       //matching gene
       CConnection high_conn = high.findCConnectionByInnovation(high_innovations.get(high_i));
