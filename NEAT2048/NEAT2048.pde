@@ -8,6 +8,8 @@ CEvolutionManager manager;
 CPopulation population;
 int slow_after;
 
+CGame active_game;
+
 void setup(){
     size(800,800);
     myFont = createFont("Georgia", 32);
@@ -15,7 +17,7 @@ void setup(){
     textAlign(CENTER, CENTER);
     
     randomSeed(1);
-    slow_after = 8000;
+    slow_after = 0;
     
     manager = new CEvolutionManager(CEvolutionManager.THOUSAND_GAMES);
     
@@ -32,23 +34,25 @@ void setup(){
     //manager.evaluate(network);
     
     //print("fitness:" + network.getFit());
-    
+    noLoop();
     _wait(5);
     //game = new CGame(true);
     //game.create_random();
     //print(game.play(1));
     //time = millis() + 3000;
+    main_loop();
 }
 
-void draw(){
-  background(255,255,255);
+void main_loop(){
+  while (true){
+
   //game.draw(800,800);
   /*if (done != true && time < millis()){
     int play=floor(random(4));
     game.play(play);
     game.draw(800,800);
     _wait(1);
-    game.create_random(); //<>//
+    game.create_random();
     time = time + 300;
     //done = true;
     
@@ -83,5 +87,14 @@ void draw(){
   println("species:" + population.species.size());
   println("old_species:" + population.old_species.size());
   print("\n");
+  }
+}
+
+void draw(){
+  println("drawing");
+      background(255,255,255);
+           fill(255,0,0);
+         rect(10,10, 100, 100);
+         active_game.draw(800,800); //<>//
 
 }

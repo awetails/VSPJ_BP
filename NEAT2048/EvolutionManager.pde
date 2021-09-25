@@ -1,6 +1,7 @@
 class CEvolutionManager {
 
   static final int THOUSAND_GAMES = 0;
+  statis final int HIGHEST_OF_TEN = 1;
 
   int _mode;
 
@@ -8,6 +9,10 @@ class CEvolutionManager {
     switch(mode) {
     case THOUSAND_GAMES:
       _mode = THOUSAND_GAMES;
+      break;
+    case HIGHEST_OF_TEN:
+      _mode = HIGHEST_OF_TEN;
+      break;
 
     default:
       _mode = THOUSAND_GAMES;
@@ -22,8 +27,10 @@ class CEvolutionManager {
 
   CGame play_game(CNetwork network){
     CGame game = new CGame(false);
+    active_game = game;
     if (population.generation_number > slow_after){
       println(game.grid.getGridText());
+      
     }
     while (true){
       int move = network.compute(game.grid);
@@ -44,6 +51,7 @@ class CEvolutionManager {
             break;
         }
         println(game.grid.getGridText());
+        redraw();
         _wait(1);
       }
         if (move_result == CGame.END || move_result == CGame.ILLEGAL_MOVE){
@@ -78,12 +86,27 @@ class CEvolutionManager {
     }
     network.setFit(fitness);
   }
+  
+  void highest_of_ten(CNetwork network){
+    double fitness = 0;
+    for (int i = 0; i < 10; ++i){
+      CGame game = play_game(network);
+      int highest = game.get_highest();
+      if (highest > fitness){
+        fitness = highest;
+      }
+    }
+    network.setFit(pow(2,(float)fitness));
+  }
 
 
   void evaluate(CNetwork network) {
     switch(_mode){
       case THOUSAND_GAMES:
       thousand_games(network);
+      break;
+      case HIGHEST_OF_TEN:
+      highest_of_ten(network);
       break;
       
       }

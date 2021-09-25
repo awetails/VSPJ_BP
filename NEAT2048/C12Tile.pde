@@ -17,7 +17,11 @@ class CTile{
     }
 
     void draw(int x, int y, int dim_x, int dim_y){
+         fill(255,0,0);
+         rect(10,10, 100, 100);
+      
         fill(0,255,0);
+        
         rect(x,y,dim_x,dim_y);
         fill(0,0,0);
         if (_val > 0){

@@ -40,7 +40,7 @@ class CGrid{
       highest.add(getTile(0,0));
       for (int i = 0; i < _dim_x; ++i){
         for (int j = 0; j < _dim_y; ++j){
-          if (i == 0 && j ==0){
+          if (i == 0 && j == 0){
             continue;
           }
           if (highest.get(0).getValue() > getTile(i,j).getValue()){
