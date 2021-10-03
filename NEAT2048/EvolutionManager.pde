@@ -1,7 +1,8 @@
 class CEvolutionManager {
 
   static final int THOUSAND_GAMES = 0;
-  statis final int HIGHEST_OF_TEN = 1;
+  static final int HIGHEST_OF_TEN = 1;
+  static final int LONGEST_OF_TEN = 2;
 
   int _mode;
 
@@ -12,6 +13,9 @@ class CEvolutionManager {
       break;
     case HIGHEST_OF_TEN:
       _mode = HIGHEST_OF_TEN;
+      break;
+    case LONGEST_OF_TEN:
+      _mode = LONGEST_OF_TEN;
       break;
 
     default:
@@ -99,6 +103,18 @@ class CEvolutionManager {
     network.setFit(pow(2,(float)fitness));
   }
 
+  void longest_of_ten(CNetwork network){
+    double fitness = 0;
+    for (int i = 0; i < 10; ++i){
+      CGame game = play_game(network);
+      int longest = game.get_highest();
+      if (longest > fitness){
+        fitness = longest;
+      }
+    }
+    network.setFit(pow(1.5,(float)fitness));
+  }
+
 
   void evaluate(CNetwork network) {
     switch(_mode){
@@ -106,6 +122,9 @@ class CEvolutionManager {
       thousand_games(network);
       break;
       case HIGHEST_OF_TEN:
+      highest_of_ten(network);
+      break;
+      case LONGEST_OF_TEN:
       highest_of_ten(network);
       break;
       
